@@ -24,7 +24,8 @@ function ListGroup() {
         <li className="list-group-item">
           <Link to="/linear-search">Linear Search</Link> {/* Link added */}
         </li>
-        <li className="list-group-item">Binary Search</li>
+        <li className="list-group-item">
+          <Link to="binary-search">Binary Search</Link></li>
         <li className="list-group-item">Interpolation Search</li>
         <li className="list-group-item">Exponential Search</li>
 
