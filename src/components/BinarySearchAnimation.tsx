@@ -13,6 +13,7 @@ function BinarySearchVisualizer() {
     const [found, setFound] = useState<boolean | null>(null); // variable to determine if the target has been found
     const [searching, setSearching] = useState(false); // variable to indicate if the search is in progress
     const intervalRef = useRef<number | null>(null); // reference to store the interval ID for clearing it later
+
     // Binary Search function with animation
     const binarySearch = () => {
         let l = 0; // left pointer initially set to 0
@@ -71,11 +72,18 @@ function BinarySearchVisualizer() {
             />
             <div className="array-container">
                 {array.map((item, index) => (
-                    <div key={index} style={{ position: "relative", display: "inline-block" }}>
+                    <div
+                        key={index}
+                        style={{
+                            position: "relative",
+                            display: "inline-block",
+                            visibility: index >= left && index <= right ? "visible" : "hidden", // Hide items outside of L and R
+                        }}
+                    >
                         {/* Render L above the left pointer index */}
                         {index === left && (
                             <motion.div
-                                style={{ position: "absolute", top: -30, left: 20, color: "blue" }}
+                                style={{ position: "absolute", top: -30, left: "50%", transform: "translateX(-50%)", color: "blue" }}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.5 }}
@@ -86,7 +94,7 @@ function BinarySearchVisualizer() {
                         {/* Render R above the right pointer index */}
                         {index === right && (
                             <motion.div
-                                style={{ position: "absolute", top: -30, left: 20, color: "blue" }}
+                                style={{ position: "absolute", top: -30, left: "50%", transform: "translateX(-50%)", color: "blue" }}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.5 }}
@@ -94,11 +102,10 @@ function BinarySearchVisualizer() {
                                 R
                             </motion.div>
                         )}
-                        {/* Render L above the left pointer index */}
+                        {/* Render M above the mid pointer index */}
                         {index === mid && (
                             <motion.div
-                                
-                                style={{ position: "absolute", top: -30, left: 20, color: "blue" }}
+                                style={{ position: "absolute", top: -30, left: "50%", transform: "translateX(-50%)", color: "blue" }}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.5 }}
