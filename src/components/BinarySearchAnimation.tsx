@@ -52,8 +52,9 @@ function BinarySearchVisualizer() {
         setRight(array.length - 1);
         setCurrentIndex(null);
         setFound(null);
-        binarySearch();
         setMid(Math.floor((0 + (array.length - 1)) / 2));
+        binarySearch();
+
     };
 
     useEffect(() => {
