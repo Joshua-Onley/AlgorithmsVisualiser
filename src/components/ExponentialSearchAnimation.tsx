@@ -7,65 +7,67 @@ function ExponentialSearchVisualizer() {
     const [array, setArray] = useState(initialArray);
     const [target, setTarget] = useState(7);
     const [found, setFound] = useState<boolean | null>(null);
-    const [searching, setSearching] = useState(false);
     const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-    const [rangeLeft, setRangeLeft] = useState(0);
-    const [rangeRight, setRangeRight] = useState(initialArray.length - 1);
+    const [rangeLeft, setRangeLeft] = useState<number | null>(0);
+    const [rangeRight, setRangeRight] = useState<number | null>(null);
+    const [stepIndex, setStepIndex] = useState<number>(0);
+    const [searchSteps, setSearchSteps] = useState<number[]>([]);
     const intervalRef = useRef<number | null>(null);
 
-    const exponentialSearch = () => {
-        setSearching(true);
-        setFound(null); // Reset found state
-        setCurrentIndex(null); // Reset current index
-        setRangeLeft(0); // Reset range
-        setRangeRight(initialArray.length - 1); // Reset range
+    const prepareSearch = () => {
+        setFound(null);
+        setCurrentIndex(null);
+        setRangeLeft(null);
+        setRangeRight(null);
+        setStepIndex(0);
+        setSearchSteps([]);
+        
+        // Initialize search steps
+        const steps: number[] = [];
+        const n = array.length;
 
-        intervalRef.current = window.setInterval(() => {
-            const n = array.length;
+        // Handle case for the first index
+        if (array[0] === target) {
+            setFound(true);
+            setCurrentIndex(0);
+            return;
+        }
 
-            // Step 1: Check if target is at the first index
-            if (array[0] === target) {
+        // Finding range for binary search
+        let index = 1;
+
+        while (index < n && array[index] <= target) {
+            steps.push(index); // Store current index for visualization
+            index *= 2;
+        }
+
+        // Store range for binary search
+        const left = Math.floor(index / 2);
+        const right = Math.min(index, n - 1);
+        setRangeLeft(left);
+        setRangeRight(right);
+        setSearchSteps(steps);
+    };
+
+    const handleNextStep = () => {
+        if (stepIndex < searchSteps.length) {
+            const current = searchSteps[stepIndex];
+            setCurrentIndex(current);
+            if (array[current] === target) {
                 setFound(true);
-                clearInterval(intervalRef.current!);
-                setSearching(false);
-                return;
-            }
-
-            // Step 2: Find the range for binary search
-            let index = 1;
-
-            while (index < n && array[index] <= target) {
-                setCurrentIndex(index); // Highlight current index
-                setRangeLeft(Math.floor(index / 2)); // Update left range
-                setRangeRight(Math.min(index, n - 1)); // Update right range
-
-                if (array[index] === target) {
-                    setFound(true);
-                    clearInterval(intervalRef.current!);
-                    setSearching(false);
-                    return;
-                }
-                
-                index *= 2; // Exponentially increase index
-            }
-
-            // Step 3: Call binary search for the identified range
-            const left = Math.floor(index / 2);
-            const right = Math.min(index, n - 1);
-            setRangeLeft(left);
-            setRangeRight(right);
-
-            const result = binarySearch(left, right);
-            if (result !== -1) {
-                setFound(true);
-                setCurrentIndex(result); // Highlight the found index
             } else {
-                setFound(false);
+                const left = Math.floor(current / 2);
+                const right = Math.min(current, array.length - 1);
+                const result = binarySearch(left, right);
+                if (result !== -1) {
+                    setFound(true);
+                    setCurrentIndex(result);
+                }
             }
-
-            clearInterval(intervalRef.current!);
+            setStepIndex((prev) => prev + 1); // Move to the next step
+        } else {
             setSearching(false);
-        }, 2000); // Adjust delay for animation speed
+        }
     };
 
     const binarySearch = (left: number, right: number) => {
@@ -87,12 +89,17 @@ function ExponentialSearchVisualizer() {
     };
 
     const handleSearch = () => {
-        exponentialSearch();
+        prepareSearch();
     };
 
-    useEffect(() => {
-        return () => clearInterval(intervalRef.current!); // Clean up interval
-    }, []);
+    const handleReset = () => {
+        setCurrentIndex(null);
+        setFound(null);
+        setRangeLeft(null);
+        setRangeRight(null);
+        setStepIndex(0);
+        setSearchSteps([]);
+    };
 
     return (
         <div className="search-container">
@@ -111,7 +118,7 @@ function ExponentialSearchVisualizer() {
                         style={{
                             position: "relative",
                             display: "inline-block",
-                            visibility: index >= rangeLeft && index <= rangeRight ? "visible" : "hidden", // Hide items outside of L and R
+                            visibility: "visible"
                         }}
                     >
                         {/* Render L pointer */}
@@ -148,8 +155,14 @@ function ExponentialSearchVisualizer() {
                     </div>
                 ))}
             </div>
-            <button onClick={handleSearch} className="btn-search" disabled={searching}>
-                {searching ? "Searching..." : "Start Search"}
+            <button onClick={handleSearch} className="btn-search">
+                Start Search
+            </button>
+            <button onClick={handleNextStep} className="btn-next" disabled={searchSteps.length === 0}>
+                Next Step
+            </button>
+            <button onClick={handleReset} className="btn-reset">
+                Reset
             </button>
             {found !== null && (
                 <p className="result">

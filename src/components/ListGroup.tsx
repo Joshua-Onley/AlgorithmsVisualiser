@@ -10,7 +10,8 @@ function ListGroup() {
     <ul className="list-group">
       <h2>Sorting Algorithms</h2>
       {/* Sorting Algorithms */}
-      <li className="list-group-item">Bubble Sort</li>
+      <li className="list-group-item">
+        <Link to="/bubble-sort">Bubble Sort</Link></li>
       <li className="list-group-item">Selection Sort</li>
       <li className="list-group-item">Insertion Sort</li>
       <li className="list-group-item">Merge Sort</li>
@@ -40,7 +41,8 @@ function ListGroup() {
       <h2>Graph Algorithms</h2>
       {/* Graph Algorithms */}
       <li className="list-group-item">Breadth-First Search (BFS)</li>
-      <li className="list-group-item">Depth-First Search (DFS)</li>
+      <li className="list-group-item">
+        <Link to="depth-first-search">Depth-First Search (DFS)</Link></li>
       <li className="list-group-item">Dijkstra's Algorithm</li>
       <li className="list-group-item">A* Algorithm</li>
       <li className="list-group-item">Bellman-Ford Algorithm</li>
