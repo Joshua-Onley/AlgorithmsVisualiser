@@ -156,7 +156,7 @@ function BinarySearchVisualizer() {
 
   <div className="box">
     <h2>Space Complexity Analysis</h2>
-    <p>The space complexity of binary search depends on its specific implementation. If the algorithm is implemented using recursion the space complexity is O(log n) because of the recursive calls. Each call adds a new frame to the call stack and since the depth of the recursion is log n, the space complexity grows with the recursion depth. If the algorithm is implemented using the iterative approach the space complexity is O(1) because a constant number of variables are used (L, R + M) no matter how large the input size is.</p>
+    <p>The space complexity of binary search depends on its implementation. If the algorithm is implemented using recursion the space complexity is O(log n) because of the recursive calls. Each call adds a new frame to the call stack and since the depth of the recursion is log n, the space complexity grows with the recursion depth. If the algorithm is implemented using the iterative approach the space complexity is O(1) because a constant number of variables are used (L, R + M) no matter how large the input size is.</p>
 
 
     

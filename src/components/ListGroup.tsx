@@ -34,8 +34,7 @@ function ListGroup() {
           <Link to="/interpolation-search">Interpolation Search</Link>
           </li>
 
-        <li className="list-group-item">
-          <Link to="/exponential-search">Exponential Search</Link></li>
+
 
 
       <h2>Graph Algorithms</h2>
