@@ -6,7 +6,7 @@ import "../App.css";
 const graph: { [key: string]: string[] } = {
     A: ["B", "C"],
     B: ["D", "E"],
-    C: ["F"],
+    C: ["F", "G"],
     D: [],
     E: [],
     F: [],
@@ -25,24 +25,29 @@ const DepthFirstSearchVisualizer: React.FC = () => {
     const [currentNode, setCurrentNode] = useState<string | null>(null);
     const [isSearching, setIsSearching] = useState(false);
 
-    const dfs = (node: string) => {
+    const dfs = (node: string, delay: number) => {
         if (!node || visited.includes(node)) return;
+
+        // Update visited and current node states
         setVisited((prev) => [...prev, node]);
         setCurrentNode(node);
 
+        // Call the next DFS step after the delay
         setTimeout(() => {
             graph[node].forEach((neighbor) => {
-                dfs(neighbor);
+                dfs(neighbor, delay); // Pass the same delay
             });
-        }, 1000);
+        }, delay);
     };
 
     const startDFS = () => {
         setVisited([]);
         setCurrentNode(null);
         setIsSearching(true);
-        dfs("A");
-        setIsSearching(false);
+        dfs("A", 1000); // Call DFS starting from node A with a delay
+        setTimeout(() => {
+            setIsSearching(false); // Set searching to false after the entire DFS completes
+        }, 1000 * (graph["A"].length + 1)); // Adjust timeout to end after processing all nodes
     };
 
     return (
@@ -83,6 +88,5 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, graph, visited, currentNode }
         </div>
     );
 };
-
 
 export default DepthFirstSearchVisualizer;
