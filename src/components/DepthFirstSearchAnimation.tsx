@@ -1,87 +1,108 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import "../App.css";
+import React, { useState } from "react"; 
+import { motion } from "framer-motion"; 
+import "../App.css"; 
 
-// Define the graph type
-const graph: { [key: string]: string[] } = {
-    A: ["B", "C"],
-    B: ["D", "E"],
-    C: ["F", "G"],
-    D: [],
-    E: [],
-    F: [],
-};
+// TreeNode class to represent each node in the tree
+class TreeNode {
+    value: number; 
+    children: TreeNode[]; 
 
-// Type for the props of TreeNode component
-interface TreeNodeProps {
-    node: string;
-    graph: { [key: string]: string[] };
-    visited: string[];
-    currentNode: string | null;
+    constructor(value: number, children: TreeNode[] = []) {
+        this.value = value; 
+        this.children = children; 
+    }
 }
 
+// Create a tree structure
+const rootNode = new TreeNode(1, [ 
+    new TreeNode(2, [new TreeNode(4), new TreeNode(5)]), 
+    new TreeNode(3, [new TreeNode(6), new TreeNode(7), new TreeNode(9)]) 
+]);
+
 const DepthFirstSearchVisualizer: React.FC = () => {
-    const [visited, setVisited] = useState<string[]>([]);
-    const [currentNode, setCurrentNode] = useState<string | null>(null);
+    const [visited, setVisited] = useState<number[]>([]); 
     const [isSearching, setIsSearching] = useState(false);
+    const [target, setTarget] = useState(5); 
+    const [found, setFound] = useState(false);
 
-    const dfs = (node: string, delay: number) => {
-        if (!node || visited.includes(node)) return;
+    const dfs = async (node: TreeNode | null, targetValue: number) => {
+        if (found) return; // Stop searching if the target has already been found
+        if (node === null) return; // Return if the current node is null
 
-        // Update visited and current node states
-        setVisited((prev) => [...prev, node]);
-        setCurrentNode(node);
+        const stack: TreeNode[] = [node]; // Start with the root node
 
-        // Call the next DFS step after the delay
-        setTimeout(() => {
-            graph[node].forEach((neighbor) => {
-                dfs(neighbor, delay); // Pass the same delay
-            });
-        }, delay);
+        while (stack.length > 0) {
+            const current = stack.pop(); // Get the current node
+            if (!current) continue; // Check if current is valid
+
+            // Highlight the current node
+            setVisited((prev) => [...prev, current.value]); 
+
+            // Check if the current node is the target
+            if (current.value === targetValue) {
+                setIsSearching(false); // Stop searching
+                setFound(true); // Mark the target as found
+                return; // Return to stop processing further
+            }
+
+            // Push children onto the stack in reverse order for depth-first traversal
+            for (let i = current.children.length - 1; i >= 0; i--) {
+                stack.push(current.children[i]);
+            }
+
+            await new Promise((resolve) => setTimeout(resolve, 1000)); // Small delay
+        }
     };
 
-    const startDFS = () => {
-        setVisited([]);
-        setCurrentNode(null);
-        setIsSearching(true);
-        dfs("A", 1000); // Call DFS starting from node A with a delay
-        setTimeout(() => {
-            setIsSearching(false); // Set searching to false after the entire DFS completes
-        }, 1000 * (graph["A"].length + 1)); // Adjust timeout to end after processing all nodes
+    const startSearch = () => {
+        
+        setVisited([]); // Reset visited nodes
+        setIsSearching(true); // Indicate that the search is in progress
+        setFound(false); // Reset found state
+        dfs(rootNode, target); // Start DFS searching for the target value
     };
+
+    const resetVariables = () => {
+        setVisited([]); // Reset visited nodes
+        setIsSearching(false); // Indicate that the search is in progress
+        setFound(false); // Reset found state
+    }
 
     return (
-        <div className="search-container">
-            <h1>Depth First Search Visualizer</h1>
-            <button onClick={startDFS} disabled={isSearching}>
+        <div className="search-container"> 
+            <h1>Depth First Search Visualizer</h1> 
+            <button onClick={startSearch} disabled={isSearching}>
                 {isSearching ? "Searching..." : "Start DFS"}
             </button>
             <div className="tree-container">
-                <TreeNode node="A" graph={graph} visited={visited} currentNode={currentNode} />
+                <RenderTree node={rootNode} visited={visited} found={found} target={target} />
             </div>
+
+            <button onClick={resetVariables} disabled={isSearching}>
+                {isSearching ? "reset DFS" : "reset DFS"}
+            </button>
         </div>
     );
 };
 
-// TreeNode component to render each tree node
-const TreeNode: React.FC<TreeNodeProps> = ({ node, graph, visited, currentNode }) => {
+// RenderTree function to recursively display the tree
+const RenderTree: React.FC<{ node: TreeNode; visited: number[]; found: boolean; target: number }> = ({ node, visited, found, target }) => {
     return (
         <div className="tree-node">
-            <motion.div
-                className="node"
+            <motion.div 
+                className="node" 
                 style={{
-                    backgroundColor: visited.includes(node) ? "green" : "lightgray",
-                    border: currentNode === node ? "2px solid red" : "none",
+                    backgroundColor: node.value === target && found ? "green" : visited.includes(node.value) ? "yellow" : "lightgray", 
                 }}
-                initial={{ scale: 1 }}
-                animate={{ scale: visited.includes(node) ? 1.1 : 1 }}
+                initial={{ scale: 1 }} 
+                animate={{ scale: visited.includes(node.value) ? 1.1 : 1 }} 
             >
-                {node}
+                {node.value}
             </motion.div>
-            {graph[node] && graph[node].length > 0 && (
-                <div className="children">
-                    {graph[node].map((child) => (
-                        <TreeNode key={child} node={child} graph={graph} visited={visited} currentNode={currentNode} />
+            {node.children.length > 0 && (
+                <div className="children"> 
+                    {node.children.map((child) => (
+                        <RenderTree key={child.value} node={child} visited={visited} found={found} target={target} />
                     ))}
                 </div>
             )}
@@ -89,4 +110,4 @@ const TreeNode: React.FC<TreeNodeProps> = ({ node, graph, visited, currentNode }
     );
 };
 
-export default DepthFirstSearchVisualizer;
+export default DepthFirstSearchVisualizer; 
