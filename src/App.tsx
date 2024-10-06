@@ -8,6 +8,7 @@ import BubbleSortVisualizer from "./components/BubbleSortAnimation";
 import DepthFirstSearchVisualizer from "./components/DepthFirstSearchAnimation";
 import "./App.css"
 import BreadthFirstSearchVisualizer from "./components/BreadthFirstSearchAnimation";
+import DijkstrasAlgorithmVisualizer from "./components/DijkstrasAlgorithmAnimation";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/bubble-sort" element={<BubbleSortVisualizer />} />
           <Route path="/depth-first-search" element={<DepthFirstSearchVisualizer />} />
           <Route path="/breadth-first-search" element={<BreadthFirstSearchVisualizer />} />
+          <Route path="/dijkstras-algorithm" element={<DijkstrasAlgorithmVisualizer />} />
         </Routes>
       </div>
     </Router>
