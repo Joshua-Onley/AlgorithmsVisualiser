@@ -7,6 +7,7 @@ import InterpolationSearchVisualizer from "./components/InterpolationSearchAnima
 import BubbleSortVisualizer from "./components/BubbleSortAnimation";
 import DepthFirstSearchVisualizer from "./components/DepthFirstSearchAnimation";
 import "./App.css"
+import BreadthFirstSearchVisualizer from "./components/BreadthFirstSearchAnimation";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/interpolation-search" element={<InterpolationSearchVisualizer />} /> {/* Correct route */}
           <Route path="/bubble-sort" element={<BubbleSortVisualizer />} />
           <Route path="/depth-first-search" element={<DepthFirstSearchVisualizer />} />
+          <Route path="/breadth-first-search" element={<BreadthFirstSearchVisualizer />} />
         </Routes>
       </div>
     </Router>

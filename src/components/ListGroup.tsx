@@ -39,7 +39,8 @@ function ListGroup() {
 
       <h2>Graph Algorithms</h2>
       {/* Graph Algorithms */}
-      <li className="list-group-item">Breadth-First Search (BFS)</li>
+      <li className="list-group-item">
+        <Link to="breadth-first-search">Breadth-First Search</Link></li>
       <li className="list-group-item">
         <Link to="depth-first-search">Depth-First Search (DFS)</Link></li>
       <li className="list-group-item">Dijkstra's Algorithm</li>
