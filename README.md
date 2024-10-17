@@ -13,3 +13,6 @@ The webapp currently contains animations for the following algorithms:
 
 **DEMO**
 
+<img src="https://github.com/Joshua-Onley/Algorithms_Visualiser/blob/main/assets/demo.gif" width="400" />
+
+
