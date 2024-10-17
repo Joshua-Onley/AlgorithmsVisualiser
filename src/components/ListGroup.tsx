@@ -43,8 +43,7 @@ function ListGroup() {
         <Link to="breadth-first-search">Breadth-First Search</Link></li>
       <li className="list-group-item">
         <Link to="depth-first-search">Depth-First Search (DFS)</Link></li>
-      <li className="list-group-item">
-        <Link to="dijkstras-algorithm">Dijkstra's Algorithm</Link></li>
+      <li className="list-group-item">Dijkstra's Algorithm</li>
       <li className="list-group-item">A* Algorithm</li>
       <li className="list-group-item">Bellman-Ford Algorithm</li>
       <li className="list-group-item">Floyd-Warshall Algorithm</li>

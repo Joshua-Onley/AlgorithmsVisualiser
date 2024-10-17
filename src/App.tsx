@@ -23,7 +23,6 @@ function App() {
           <Route path="/bubble-sort" element={<BubbleSortVisualizer />} />
           <Route path="/depth-first-search" element={<DepthFirstSearchVisualizer />} />
           <Route path="/breadth-first-search" element={<BreadthFirstSearchVisualizer />} />
-          <Route path="/dijkstras-algorithm" element={<DijkstrasAlgorithmVisualizer />} />
         </Routes>
       </div>
     </Router>
