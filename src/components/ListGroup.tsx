@@ -32,9 +32,6 @@ function ListGroup() {
         <Link to="depth-first-search">Depth-First Search (DFS)</Link></li>
 
 
-      <h2>Miscellaneous Algorithms</h2>
-      {/* Miscellaneous Algorithms */}
-      <li className="list-group-item">Floyd’s Tortoise and Hare</li>
 
     </ul>
 

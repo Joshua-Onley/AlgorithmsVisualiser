@@ -42,7 +42,7 @@ function BubbleSortVisualizer() {
                     setArray([...arr]); // Update the array state for re-rendering
                 }
 
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Slower animation delay (1 second)
+                await new Promise(resolve => setTimeout(resolve, 200)); // Slower animation delay (1 second)
             }
         }
         setComparingIndices([-1, -1]); // Reset comparing indices
